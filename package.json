@@ -6,7 +6,8 @@
   "type": "module",
   "scripts": {
     "dev": "node server/dev.mjs",
-    "test": "node --test \"tests/*.test.mjs\""
+    "test": "node --test \"tests/*.test.mjs\"",
+    "e2e": "python tests/e2e.py"
   },
   "engines": {
     "node": ">=20"
