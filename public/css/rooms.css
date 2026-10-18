@@ -176,6 +176,16 @@
   transform: rotate(-3deg);
 }
 .door__cal { display: flex; }
+/* a visitor's own mark */
+.door__mine { display: grid; gap: 6px; width: min(100%, 360px); }
+.door__mine-label { font: 600 1rem var(--font-display); color: var(--heading); }
+.door__mine-row { display: flex; align-items: center; gap: 8px; }
+.door__mine-can { font: 400 1.3rem var(--font-hand); color: var(--heading); }
+.door__mine input { flex: 1; min-width: 0; padding: 8px 10px; border: 2.5px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--ink); font-size: 1rem; }
+.door__mine input::placeholder { color: var(--muted); opacity: 0.8; }
+.door__mine input:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+.door__mine .toy-btn { flex: none; padding-inline: 14px; }
+.door__mine-status { min-height: 1.2em; font-size: 0.9rem; color: var(--muted); }
 .calendar { position: relative; width: 150px; height: 172px; padding: 0; border: 0; background: none; }
 .calendar__rings {
   position: absolute;

@@ -184,7 +184,12 @@ function doorway(host) {
   const marks = h("ol", { class: "door__marks", "aria-label": "Sideways marks" });
   const calHost = h("div", { class: "door__cal" });
   const postcard = h("button", { type: "button", class: "postcard", "aria-pressed": "false", "aria-label": "A postcard from the crickets. Click to flip it over.", hidden: "" });
-  side.append(measure, marks, calHost, postcard);
+  const mine = h("form", { class: "door__mine", novalidate: "" });
+  mine.innerHTML = `<label class="door__mine-label" for="mark-input">Add your own sideways mark</label>
+    <span class="door__mine-row"><span class="door__mine-can" aria-hidden="true">Can</span><input id="mark-input" name="mark" type="text" maxlength="40" autocomplete="off" placeholder="yawn on purpose">
+    <button type="submit" class="toy-btn toy-btn--soft">Draw it</button></span>
+    <span class="door__mine-status" role="status" aria-live="polite"></span>`;
+  side.append(measure, marks, mine, calHost, postcard);
   const grass = h("div", { class: "door__grass", "aria-hidden": "true" });
   grass.append(svg(Array.from({ length: 5 }, (_, i) => cricket(20 + i * 120, 8, 0.9, { cls: "egg-cricket" })).join(""), { viewBox: "0 0 620 52", preserveAspectRatio: "xMidYMax meet" }));
   host.append(chart, side, grass);
@@ -197,6 +202,27 @@ function doorway(host) {
   };
   const visitText = (n) => (n === 1 ? "Night 1: you found the nursery" : n === 2 ? "Night 2: you came back!" : `Night ${n}: you came back again`);
   for (let n = Math.max(1, visits - 3); n <= visits; n++) addMark(visitText(n));
+
+  // visitors grow sideways too: their marks are kept in this browser
+  const myMarks = () => store.get("pip-my-marks", []).filter((t) => typeof t === "string").slice(-3);
+  myMarks().forEach((t) => addMark(`Can ${t}`));
+  const input = mine.querySelector("input");
+  const status = mine.querySelector(".door__mine-status");
+  mine.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const text = input.value.replace(/\s+/g, " ").trim().replace(/^can\s+/i, "").slice(0, 40);
+    if (!text) {
+      status.textContent = "Write something you can do. Anything counts. Even yawning.";
+      input.focus();
+      return;
+    }
+    store.set("pip-my-marks", [...myMarks(), text].slice(-3));
+    addMark(`Can ${text}`, true);
+    input.value = "";
+    status.textContent = "Drawn! You grow sideways too.";
+    audio.play("note", mine.querySelector("button"), 4);
+    speak("Look at you! Sideways growing is the best kind.");
+  });
 
   let measured = 0;
   const pencil = frame.querySelector(".door__pencil");
