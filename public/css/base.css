@@ -421,6 +421,7 @@ a { color: var(--accent); text-underline-offset: 3px; }
 
 .hero__pip { position: relative; z-index: 2; width: min(260px, 70vw); margin-top: 18%; }
 .hero__pip .bubble { left: 50%; bottom: 90%; translate: -50% 0; }
+#hero-pip { width: 100%; aspect-ratio: 220 / 300; } /* holds Pip's space before the script draws him, so nothing jumps */
 .hint {
   position: absolute;
   right: -6px; top: 4%;
