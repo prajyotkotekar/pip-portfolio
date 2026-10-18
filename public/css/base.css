@@ -762,3 +762,12 @@ hr.rainbow {
   .fidget .foot { animation: none; }
   .lb.bonk { animation: none; }
 }
+
+/* the big light: the new palette spreads from the switch (settings.js adds .vt-light) */
+::view-transition-old(root),
+::view-transition-new(root) { animation: none; mix-blend-mode: normal; }
+.vt-light::view-transition-new(root) { animation: light-reveal 560ms cubic-bezier(0.77, 0, 0.175, 1); }
+@keyframes light-reveal {
+  from { clip-path: circle(0 at var(--vx, 90%) var(--vy, 5%)); }
+  to { clip-path: circle(var(--vr, 150vmax) at var(--vx, 90%) var(--vy, 5%)); }
+}
