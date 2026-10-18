@@ -35,7 +35,17 @@ function lab(host) {
   const secs = spring.querySelector(".lab__spring-secs");
   const legend = h("p", { class: "lab__legend" });
   legend.innerHTML = NOTE_NAMES.map((n, i) => `<span style="--c: var(${BLOCK_VARS[i]})">${n}</span>`).join("");
-  read.append(staff, phrase, spring, legend);
+  const sleepy = h("div", { class: "lab__tempo", role: "group", "aria-label": "How sleepy?" });
+  sleepy.innerHTML = `<span class="lab__tempo-label" aria-hidden="true">How sleepy?</span>` +
+    [["Sleepy", 1], ["Sleepier", 1.35], ["Sleepiest", 1.8]].map(([name, t]) => `<button type="button" class="lab__tempo-btn" data-tempo="${t}" aria-pressed="${t === musicbox.tempo}">${name}</button>`).join("");
+  sleepy.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-tempo]");
+    if (!btn) return;
+    musicbox.setTempo(Number(btn.dataset.tempo));
+    sleepy.querySelectorAll("[data-tempo]").forEach((b) => b.setAttribute("aria-pressed", String(b === btn)));
+    audio.play("click", btn);
+  });
+  read.append(staff, phrase, spring, sleepy, legend);
   host.append(dresser, read);
 
   let heads = [];

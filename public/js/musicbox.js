@@ -14,6 +14,7 @@ let lastSig = "";
 let phraseNo = 0;
 let pos = 2; // where the random walk currently is (index into NOTES)
 let paused = false;
+let tempo = 1; // 1 = sleepy, bigger = slower and sleepier
 
 function makePhrase() {
   for (let attempt = 0; attempt < 12; attempt++) {
@@ -62,9 +63,9 @@ function playPhrase() {
       audio.musicNote(NOTES[item.n], last ? 0.13 : 0.11, last ? 2.6 : 1.8);
       bus.emit("mb:note", { n: item.n, k, last });
     }, at * 1000));
-    t += item.beats * BEAT;
+    t += item.beats * BEAT * tempo;
   });
-  t += BEAT * 0.8; // a breath between phrases
+  t += BEAT * 0.8 * tempo; // a breath between phrases
   remaining -= t;
   bus.emit("mb:wind", { remaining: Math.max(0, remaining), max: MAX_WIND });
   timers.push(setTimeout(playPhrase, t * 1000));
@@ -101,6 +102,10 @@ export const musicbox = {
   get playing() { return playing; },
   get remaining() { return Math.max(0, remaining); },
   get phrases() { return phraseNo; },
+  get tempo() { return tempo; },
+
+  /** How sleepy: 1, 1.35 or 1.8 times slower. Takes effect from the next phrase. */
+  setTempo(t) { tempo = t; },
 
   /** Add `seconds` of spring. Starts the music if it was quiet. */
   wind(seconds) {
