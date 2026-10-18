@@ -9,6 +9,14 @@ import { initSparkles } from "./sparkle.js";
 import { initCounter } from "./counter.js";
 import { initGuestbook } from "./guestbook.js";
 import { initSpin } from "./spin.js";
+import { initScene1 } from "./scenes/s1.js";
+import { initScene2 } from "./scenes/s2.js";
+import { initScene3 } from "./scenes/s3.js";
+import { initScene4 } from "./scenes/s4.js";
+import { initScene5 } from "./scenes/s5.js";
+import { initScene6 } from "./scenes/s6.js";
+import { initScene7 } from "./scenes/s7.js";
+import { initCardFade } from "./scenes/common.js";
 
 function safely(fn) {
   try {
@@ -69,6 +77,14 @@ function initRing() {
 safely(initSettings);
 safely(initPips);
 safely(initTitleBlocks);
+const sections = {
+  1: initScene1, 2: initScene2, 3: initScene3, 4: initScene4, 5: initScene5, 6: initScene6, 7: initScene7,
+};
+Object.entries(sections).forEach(([n, init]) => {
+  const el = document.getElementById(`scene-${n}`);
+  if (el) safely(() => init(el));
+});
+safely(initCardFade);
 safely(initGuestbook);
 safely(initCounter);
 safely(initSparkles);
