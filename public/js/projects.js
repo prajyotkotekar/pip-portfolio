@@ -47,7 +47,7 @@ function lab(host) {
       const y = NOTE_Y[n];
       const g = document.createElementNS("http://www.w3.org/2000/svg", "g");
       g.setAttribute("class", "staff__note");
-      g.innerHTML = `${y <= 18 ? `<path d="M${x - 13} 18h26" class="staff__ledger"/>` : ""}<ellipse cx="${x}" cy="${y}" rx="8" ry="6" transform="rotate(-20 ${x} ${y})" style="fill: var(${BLOCK_VARS[n]})"/><path d="M${x + 7} ${y - 2}V${y - 30}" class="staff__stem"/><text x="${x}" y="104" text-anchor="middle">${NOTE_NAMES[n]}</text>`;
+      g.innerHTML = `${y <= 18 ? `<path d="M${x - 13} 18h26" class="staff__ledger"/>` : ""}<ellipse cx="${x}" cy="${y}" rx="8" ry="6" style="fill: var(${BLOCK_VARS[n]})"/><path d="M${x + 7} ${y - 2}V${y - 30}" class="staff__stem"/><text x="${x}" y="104" text-anchor="middle">${NOTE_NAMES[n]}</text>`;
       notesG.append(g);
       return g;
     });

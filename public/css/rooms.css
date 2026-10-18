@@ -58,8 +58,8 @@
 .staff { width: 100%; height: auto; overflow: visible; }
 .staff__lines path { stroke: var(--muted); stroke-width: 1.6; opacity: 0.6; }
 .staff__clef { font: 700 40px var(--font-display); fill: var(--accent); }
-.staff__note ellipse { stroke: #5a3448; stroke-width: 2; transition: transform 200ms var(--ease-out); transform-box: fill-box; transform-origin: center; }
-.staff__note.is-playing ellipse { transform: scale(1.35); }
+.staff__note ellipse { stroke: #5a3448; stroke-width: 2; transition: transform 200ms var(--ease-out); transform-box: fill-box; transform-origin: center; transform: rotate(-20deg); }
+.staff__note.is-playing ellipse { transform: rotate(-20deg) scale(1.35); }
 .staff__stem,
 .staff__ledger { stroke: var(--ink); stroke-width: 2; }
 .staff__note text { font: 700 14px var(--font-display); fill: var(--muted); }
