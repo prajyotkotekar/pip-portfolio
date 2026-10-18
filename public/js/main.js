@@ -4,6 +4,10 @@ import { motionPrefs, pick } from "./state.js";
 import { audio } from "./audio.js";
 import { createPip, registerSpeakers } from "./pip.js";
 import { initSettings } from "./settings.js";
+import { initIdle } from "./idle.js";
+import { initSparkles } from "./sparkle.js";
+import { initCounter } from "./counter.js";
+import { initGuestbook } from "./guestbook.js";
 import { initSpin } from "./spin.js";
 
 function safely(fn) {
@@ -65,6 +69,10 @@ function initRing() {
 safely(initSettings);
 safely(initPips);
 safely(initTitleBlocks);
+safely(initGuestbook);
+safely(initCounter);
+safely(initSparkles);
 safely(initSpin);
+safely(initIdle);
 safely(initRing);
 document.documentElement.classList.add("js-ready");
