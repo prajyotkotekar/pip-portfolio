@@ -17,7 +17,7 @@ export function initSpin() {
     element: canvas,
     zoom: 5.4,
     dragRotate: true,
-    rotate: { x: -0.12, y: 0.3 },
+    rotate: { x: -0.12, y: 0.12 },
     onDragStart() { dragging = true; },
     onDragEnd() { dragging = false; idleSince = performance.now(); },
   });
@@ -90,9 +90,9 @@ export function initSpin() {
       if (chaos) illo.rotate.y += 0.06;
       else {
         // a gentle sway around wherever you left it, no drift
-        const before = Math.sin(t) * 0.38;
+        const before = Math.sin(t) * 0.3;
         t += 0.014;
-        illo.rotate.y += Math.sin(t) * 0.38 - before;
+        illo.rotate.y += Math.sin(t) * 0.3 - before;
       }
     }
     illo.updateRenderGraph();
