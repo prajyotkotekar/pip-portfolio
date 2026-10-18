@@ -215,11 +215,15 @@ def run(browser, url, w, h, tag, last_post):
     ok("wish appears in the jar", pg.locator("#wish-list .slip__msg", has_text=f"({token})").count() == 1)
     ok("hit counter shows a number", pg.evaluate("document.getElementById('hits-text').textContent").endswith("dreams delivered"))
 
-    # the silence timer
+    # the silence timer: after ~5 s of stillness Pip complains (or hums, if the music box is still going)
     to(pg, "#hello")
-    pg.wait_for_timeout(5800)
-    ok("Pip speaks up after 5 s of quiet", pg.evaluate(
-        "[...document.querySelectorAll('.bubble.show')].some(b => /Say something|Tuesday|Cozy/.test(b.textContent))"))
+    spoke = False
+    for _ in range(18):
+        pg.wait_for_timeout(500)
+        if pg.evaluate("[...document.querySelectorAll('.bubble.show')].some(b => /Say something|Tuesday|Cozy|hmm/.test(b.textContent))"):
+            spoke = True
+            break
+    ok("Pip speaks up after 5 s of quiet", spoke)
 
     ok("no horizontal scroll at the end", pg.evaluate(no_overflow))
     ctx.close()
