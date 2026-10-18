@@ -29,7 +29,7 @@
   background-color: #33274d;
   background-image: repeating-linear-gradient(90deg, transparent 0 40px, rgba(255, 255, 255, 0.04) 40px 46px);
 }
-.scene--5 .stage { background: #e9d6c3; }
+.scene--5 .stage { background: #eadbe2; }
 .scene--7 .stage { background: linear-gradient(#17163a, #2b2152); }
 
 .steps {
@@ -402,7 +402,7 @@
   position: absolute;
   inset: 0;
   z-index: 5;
-  background: #100b1f;
+  background: #1d1530;
   opacity: 0;
   pointer-events: none;
   transition: opacity 700ms ease;
@@ -443,13 +443,13 @@
 .lamp-svg { width: 100%; height: 100%; overflow: visible; }
 .lamp-glow { fill: #ffd27a; opacity: 0; transition: opacity 400ms ease; }
 .lamp.is-lit .lamp-glow { opacity: 0.45; }
-.lamp-shade { fill: #d9cbbb; transition: fill 300ms ease; }
+.lamp-shade { fill: #e4d2da; transition: fill 300ms ease; }
 .lamp.is-lit .lamp-shade { fill: #ffe7a6; }
-.lamp-cut { fill: #8a7a6c; transition: fill 300ms ease; }
+.lamp-cut { fill: #8b6a7c; transition: fill 300ms ease; }
 .lamp.is-lit .lamp-cut { fill: #fff8e0; }
-.lamp-dots circle { fill: #8a7a6c; transition: fill 300ms ease; }
+.lamp-dots circle { fill: #8b6a7c; transition: fill 300ms ease; }
 .lamp.is-lit .lamp-dots circle { fill: #fff8e0; }
-.lamp--lantern img { position: relative; width: 100%; height: 100%; object-fit: contain; filter: brightness(0.55) saturate(0.6); transition: filter 400ms ease; }
+.lamp--lantern img { position: relative; width: 100%; height: 100%; object-fit: contain; filter: brightness(0.78) sepia(0.18) saturate(0.95); transition: filter 400ms ease; }
 .lamp--lantern.is-lit img { filter: none; }
 .lamp__halo {
   position: absolute;

@@ -22,7 +22,7 @@ export function initScene5(section) {
   // the room (under the dark)
   const A = artBox(stage, "s5-room");
   A.svg.innerHTML = `
-    <rect x="-900" y="-700" width="2400" height="1240" fill="#e9d6c3"/>
+    <rect x="-900" y="-700" width="2400" height="1240" fill="#eadbe2"/>
     <path d="${Array.from({ length: 40 }, (_, i) => `M${-900 + i * 60} -700V540`).join("")}" stroke="#dcc3ae" stroke-width="10"/>
     <path d="M50 250V120a100 80 0 0 1 200 0v130z" fill="#1b1838"/>
     ${stars(8, { x0: 70, x1: 230, y0: 60, y1: 220, seed: 51 })}
