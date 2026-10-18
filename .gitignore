@@ -12,6 +12,7 @@ __pycache__/
 *.pyc
 
 # ── Dependencies & environment ──────────────────────────────
+.data/
 node_modules/
 .venv/
 venv/
