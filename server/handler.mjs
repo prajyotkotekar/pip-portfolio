@@ -1,7 +1,12 @@
 // One request handler for /api/*, shared by the dev server and the Netlify function.
+import { createHash } from "node:crypto";
 import { createGuestbook, createCounter } from "./core.mjs";
 
 const MAX_BODY = 2048;
+
+// Visitors are rate-limited by a short hash of their IP; the IP itself is never stored.
+export const clientIdFor = (ip) =>
+  createHash("sha256").update(String(ip || "anon")).digest("hex").slice(0, 16);
 
 export function createApi(store, options) {
   const guestbook = createGuestbook(store, options);

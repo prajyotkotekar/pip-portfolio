@@ -3,9 +3,8 @@
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, resolve, sep } from "node:path";
-import { createHash } from "node:crypto";
 import { fileURLToPath } from "node:url";
-import { createApi } from "./handler.mjs";
+import { createApi, clientIdFor } from "./handler.mjs";
 import { createFileStore } from "./stores.mjs";
 
 const args = Object.fromEntries(
@@ -82,7 +81,7 @@ const server = createServer(async (req, res) => {
       method: req.method,
       path: url.pathname,
       rawBody: req.method === "POST" ? await readBody(req) : "",
-      clientId: createHash("sha256").update(ip).digest("hex").slice(0, 16),
+      clientId: clientIdFor(ip),
     });
     res.writeHead(status, { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" });
     res.end(JSON.stringify(body));
