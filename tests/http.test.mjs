@@ -85,9 +85,15 @@ test("unknown API routes and wrong methods are handled", async () => {
   assert.equal((await fetch(`${base}/api/hits`, { method: "DELETE" })).status, 405);
 });
 
-test("static files are served, and the server refuses to leave its folder", async () => {
-  const asset = await fetch(`${base}/assets/pip/ASSET_PACK_README.txt`);
-  assert.equal(asset.status, 200);
-  const sneaky = await fetch(`${base}/..%2f..%2fpackage.json`);
+test("the site is served from public/, and the server refuses to leave it", async () => {
+  const page = await fetch(`${base}/`);
+  assert.equal(page.status, 200);
+  assert.match(page.headers.get("content-type"), /text\/html/);
+  assert.match(await page.text(), /Pip/);
+  const image = await fetch(`${base}/assets/img/pip_portrait.webp`);
+  assert.equal(image.status, 200);
+  assert.equal(image.headers.get("content-type"), "image/webp");
+  assert.equal((await fetch(`${base}/package.json`)).status, 404);
+  const sneaky = await fetch(`${base}/..%2fpackage.json`);
   assert.equal(sneaky.status, 404);
 });

@@ -1,5 +1,5 @@
 // Local dev server: serves the site and the /api routes.
-// Usage: node server/dev.mjs [--port 5173] [--root .] [--data .data]
+// Usage: node server/dev.mjs [--port 5173] [--root public] [--data .data]
 import { createServer } from "node:http";
 import { readFile, stat } from "node:fs/promises";
 import { extname, join, resolve, sep } from "node:path";
@@ -15,7 +15,7 @@ const args = Object.fromEntries(
 );
 
 const projectRoot = fileURLToPath(new URL("..", import.meta.url));
-const root = resolve(args.root ?? projectRoot);
+const root = resolve(args.root ?? join(projectRoot, "public"));
 const port = Number(args.port ?? process.env.PORT ?? 5173);
 const api = createApi(createFileStore(resolve(args.data ?? join(projectRoot, ".data"))));
 

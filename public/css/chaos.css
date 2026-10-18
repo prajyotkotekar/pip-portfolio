@@ -1,0 +1,169 @@
+/* ==========================================================
+   Responsive chaos mode: Pip's homepage as it would look in 1999.
+   Everything here is scoped to html.chaos, so switching it off
+   restores the page exactly.
+   ========================================================== */
+
+html.chaos {
+  --font-display: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Comic Sans", cursive;
+  --font-body: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Comic Sans", cursive;
+  --font-story: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Comic Sans", cursive;
+  --font-hand: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Comic Sans", cursive;
+  --bg: #1f1960;
+  --surface: #2c2478;
+  --ink: #fffbe8;
+  --heading: #ffe066;
+  --muted: #bfe6ff;
+  --accent: #ff8ccf;
+  --accent-ink: #1f1960;
+  --accent-edge: #8a1f5c;
+  --line: #ffe066;
+  --stitch: #ff8ccf;
+  --card: #fffbe8;
+  --focus: #7fd4ff;
+  cursor: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='28' height='28' viewBox='0 0 28 28'%3E%3Cpath d='M14 1l3.6 8.4L26 10l-6.6 5.6L21.4 25 14 20.2 6.6 25l2-9.4L2 10l8.4-.6z' fill='%23ffe066' stroke='%23000' stroke-width='1.6'/%3E%3C/svg%3E") 14 14, auto;
+}
+
+/* tiled starry background, the GeoCities classic */
+.chaos body,
+.chaos .hero,
+.chaos .about,
+.chaos .made,
+.chaos .wishes,
+.chaos .foot,
+.chaos .story__intro {
+  background-color: #1f1960;
+  background-image:
+    radial-gradient(#ffe066 1.6px, transparent 2.2px),
+    radial-gradient(#ffffff 1px, transparent 1.6px),
+    radial-gradient(#9ad7ff 1.2px, transparent 1.8px);
+  background-size: 44px 44px, 44px 44px, 70px 70px;
+  background-position: 0 0, 22px 22px, 11px 33px;
+}
+
+/* WordArt headings */
+.chaos h1,
+.chaos h2,
+.chaos .exhibit__text h3 {
+  color: #ffe066;
+  text-shadow: 2px 2px 0 #ff4fa0, 4px 4px 0 #36b7ff, 6px 6px 0 #140f40;
+}
+.chaos .story__intro h2,
+.chaos .made__head h2,
+.chaos .wishes__head h2,
+.chaos .about__title { transform: rotate(-2deg); }
+.chaos a { color: #7fd4ff; }
+.chaos .hero__tagline { color: #ff8ccf; }
+
+/* the top bar becomes a beige window title bar */
+.chaos .bar { background: #c0c0c0; border-bottom: 3px outset #f2f2f2; }
+.chaos .bar::after { display: none; }
+.chaos .bar__name { color: #000080; font-weight: 700; }
+.chaos .ctl {
+  border-radius: 0;
+  border: 3px outset #f2f2f2;
+  background: #c0c0c0;
+  color: #000;
+  box-shadow: none;
+}
+.chaos .ctl:active { border-style: inset; transform: none; }
+.chaos .ctl--chaos[aria-pressed="true"] { border-style: inset; background: #ffe066; }
+
+.chaos .marquee {
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0; right: 0;
+  height: 30px;
+  overflow: hidden;
+  background: #ffe066;
+  color: #c4006a;
+  border-bottom: 3px solid #000;
+  font: 700 0.95rem/26px var(--font-display);
+}
+.marquee__track { display: flex; width: max-content; animation: marquee 26s linear infinite; }
+.marquee__track span { display: inline-block; padding-right: 48px; white-space: nowrap; animation: wobble 0.9s ease-in-out infinite alternate; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+@keyframes wobble { from { transform: skewX(-8deg) translateY(-1px); } to { transform: skewX(8deg) translateY(1px); } }
+
+/* chunky grey 3D buttons */
+.chaos .toy-btn,
+.chaos .ring__btn {
+  border-radius: 0;
+  border: 3px outset #f2f2f2;
+  background: #c0c0c0;
+  color: #000;
+  box-shadow: none;
+  font-weight: 700;
+}
+.chaos .toy-btn:active,
+.chaos .ring__btn:active { border-style: inset; transform: none; box-shadow: none; }
+
+/* rainbow rules */
+.chaos hr.rainbow {
+  height: 10px;
+  background: linear-gradient(90deg, #ff4d4d, #ffa64d, #ffe066, #6ee06e, #4dc3ff, #9d6bff, #ff6fd8);
+  border-top: 2px solid #000;
+  border-bottom: 2px solid #000;
+}
+
+/* blinking NEW! stickers everywhere */
+.chaos .sticker-new { animation: blink 0.9s steps(2, start) infinite; }
+.chaos .exhibit__text h3::after {
+  content: "NEW!";
+  display: inline-block;
+  padding: 2px 8px;
+  background: #ff3b7f;
+  color: #fff;
+  font-size: 0.9rem;
+  text-shadow: none;
+  transform: rotate(8deg);
+  animation: blink 0.9s steps(2, start) infinite;
+}
+.chaos #project-1 .exhibit__text h3::after { content: none; }
+@keyframes blink { to { visibility: hidden; } }
+
+/* under-construction tape on the rooms */
+.chaos .made,
+.chaos .wishes {
+  border-top: 16px solid #000;
+  border-image: repeating-linear-gradient(45deg, #111 0 14px, #ffe066 14px 28px) 16;
+}
+
+/* story cards turn into guestbook-style boxes */
+.chaos .card { border-radius: 0; border: 5px ridge #ffe066; box-shadow: 6px 6px 0 #000; color: #1f1960; }
+.chaos .card::before { display: none; }
+.chaos .card h3 { color: #c4006a; text-shadow: none; }
+.chaos .card__try { color: #c4006a; }
+
+.chaos .profile { border: 5px ridge #c0c0c0; border-left: 5px ridge #c0c0c0; border-radius: 0; background: #fff; }
+.chaos .profile th,
+.chaos .profile td { border: 2px inset #c0c0c0; padding: 4px 8px; height: auto; }
+.chaos .profile th { color: #000080; background: #e0e0e0; }
+.chaos .profile td { color: #c4006a; }
+.chaos .spin,
+.chaos .wish-form,
+.chaos .lab__readout,
+.chaos .shelf__blocks { border-radius: 0; border: 4px ridge #ffe066; box-shadow: 5px 5px 0 #000; }
+.chaos .odometer,
+.chaos .monitor__label { background: #000; color: #fff; border-color: #888; }
+.chaos .odo-digit { background: #222; border-right: 1px solid #555; }
+.chaos .exhibit { padding: 14px; border: 3px dashed #ffe066; }
+.chaos .slip { border: 2px solid #000; border-radius: 0; }
+.chaos .field input,
+.chaos .field textarea { border-radius: 0; border: 3px inset #c0c0c0; background: #fff; color: #000; }
+.chaos .sticker span { border-radius: 0; }
+.chaos .bubble { border-radius: 0; border-color: #000; box-shadow: 4px 4px 0 #000; }
+
+@media (max-width: 520px) {
+  .chaos .marquee { height: 26px; line-height: 22px; font-size: 0.85rem; }
+  .chaos h1,
+  .chaos h2 { text-shadow: 1px 1px 0 #ff4fa0, 3px 3px 0 #36b7ff; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee__track,
+  .marquee__track span,
+  .chaos .sticker-new,
+  .chaos .exhibit__text h3::after { animation: none; }
+}

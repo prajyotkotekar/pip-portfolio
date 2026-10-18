@@ -1,0 +1,347 @@
+/* ==========================================================
+   Things Pip made: every exhibit sits on its own furniture
+   ========================================================== */
+.made { padding: 72px var(--gutter) 64px; }
+.made__head,
+.wishes__head { text-align: center; max-width: 40rem; margin: 0 auto 44px; }
+.made__head h2,
+.wishes__head h2 { font-size: clamp(2.1rem, 6vw, 3rem); margin-bottom: 10px; }
+.made__head p,
+.wishes__head p { color: var(--muted); margin: 0; }
+
+.exhibit {
+  max-width: 1120px;
+  margin: 0 auto 64px;
+  display: grid;
+  gap: 22px 44px;
+  align-items: center;
+  scroll-margin-top: calc(var(--bar) + 18px);
+}
+.exhibit:focus { outline: none; }
+.exhibit__text h3 { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 14px; font-size: clamp(1.6rem, 4.4vw, 2.1rem); margin-bottom: 12px; }
+.exhibit__text p { max-width: 34rem; }
+.exhibit__small { font: 400 1.25rem/1.3 var(--font-hand); color: var(--muted); }
+.exhibit__text .sticker-new { width: 50px; height: 50px; font-size: 0.78rem; }
+.exhibit__oops { font: 400 1.2rem var(--font-hand); color: var(--muted); }
+@media (min-width: 880px) {
+  .exhibit { grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr); }
+  .exhibit:nth-of-type(even) .exhibit__text { order: 2; }
+}
+
+/* 1. Lullaby Lab: the box on a dresser, a staff that shows the live phrase */
+.lab { display: grid; gap: 20px; align-items: end; }
+@media (min-width: 600px) { .lab { grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); } }
+.lab__dresser {
+  position: relative;
+  padding: 0 6% 0;
+  background: linear-gradient(transparent calc(100% - 22px), #b98962 calc(100% - 22px));
+  border-bottom: 4px solid #5c4033;
+  border-radius: 0 0 6px 6px;
+}
+.lab__dresser::after {
+  content: "";
+  display: block;
+  height: 56px;
+  margin: 0 -6%;
+  background: #9a6e4d radial-gradient(circle at 25% 50%, #e3b048 5px, transparent 6px), radial-gradient(circle at 75% 50%, #e3b048 5px, transparent 6px);
+  background-color: #9a6e4d;
+  border-top: 4px solid #5c4033;
+}
+.lab__box { width: min(300px, 86%); margin: 0 auto; transform: translateY(6px); }
+.lab__readout {
+  padding: 16px 18px;
+  background: var(--surface);
+  border: 3px solid var(--line);
+  border-radius: 18px;
+  box-shadow: 0 5px 0 var(--line);
+}
+.staff { width: 100%; height: auto; overflow: visible; }
+.staff__lines path { stroke: var(--muted); stroke-width: 1.6; opacity: 0.6; }
+.staff__clef { font: 700 40px var(--font-display); fill: var(--accent); }
+.staff__note ellipse { stroke: #5a3448; stroke-width: 2; transition: transform 200ms var(--ease-out); transform-box: fill-box; transform-origin: center; }
+.staff__note.is-playing ellipse { transform: scale(1.35); }
+.staff__stem,
+.staff__ledger { stroke: var(--ink); stroke-width: 2; }
+.staff__note text { font: 700 14px var(--font-display); fill: var(--muted); }
+.staff__note.is-playing text { fill: var(--accent); }
+.lab__phrase { font: 400 1.25rem/1.3 var(--font-hand); color: var(--heading); margin: 8px 0 10px; min-height: 1.3em; }
+.lab__spring { display: flex; align-items: center; gap: 10px; font: 600 0.95rem var(--font-display); color: var(--heading); }
+.lab__spring-bar { position: relative; flex: 1; height: 12px; border-radius: 6px; background: var(--line); overflow: hidden; }
+.lab__spring-bar span { position: absolute; inset: 0; background: var(--gold); transform-origin: left; transform: scaleX(var(--wound, 0)); transition: transform 600ms ease; }
+.lab__spring-secs { min-width: 3.4em; text-align: right; font-variant-numeric: tabular-nums; }
+.lab__legend { display: flex; gap: 6px; margin: 12px 0 0; }
+.lab__legend span {
+  display: grid;
+  place-items: center;
+  width: 30px; height: 30px;
+  background: var(--c);
+  color: #5a3448;
+  border: 2px solid rgba(90, 52, 72, 0.55);
+  border-radius: 7px;
+  font: 700 0.95rem var(--font-display);
+}
+
+/* 2. Nightlight Collection: a windowsill at night */
+.sill {
+  position: relative;
+  padding: 26px 0 16px;
+  background: #241b3d;
+  border: 10px solid #f4e6d2;
+  border-bottom-width: 0;
+  border-radius: 26px 26px 6px 6px;
+  overflow: hidden;
+}
+.sill__row { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); row-gap: 14px; }
+@media (min-width: 560px) { .sill__row { grid-template-columns: repeat(6, minmax(0, 1fr)); } }
+.sill__item {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 96px 4px 8px;
+  background: linear-gradient(transparent calc(100% - 44px), #c99a78 calc(100% - 44px), #b98962);
+}
+.sill__item .lamp { width: 64px; height: 76px; }
+.sill__item .lamp--lantern { width: 70px; height: 100px; }
+.sill__shapes { position: absolute; top: 2px; left: 50%; width: 120px; height: 120px; translate: -50% 0; opacity: 0; transition: opacity 500ms ease; pointer-events: none; }
+.sill__item.is-lit .sill__shapes { opacity: 1; }
+.sill__tag {
+  margin-top: 8px;
+  padding: 1px 6px;
+  background: #fffbe8;
+  color: #3d4f8a;
+  font: 400 0.98rem/1.1 var(--font-hand);
+  text-align: center;
+  transform: rotate(-2deg);
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.2);
+}
+.sill__bubble { left: 50%; bottom: 100%; translate: -50% 40px; }
+.sill__count { margin: 14px 16px 0; text-align: center; color: #f6e9df; font: 600 1rem var(--font-display); }
+.sill .lamp:focus-visible { outline-color: var(--amber); }
+
+/* 3. Dream Delivery Routes */
+.routes { display: grid; gap: 16px; justify-items: center; }
+.routes__map { position: relative; width: min(100%, 540px); aspect-ratio: 1; }
+.routes__controls { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 18px; }
+.routes__status { margin: 0; font: 400 1.25rem var(--font-hand); color: var(--heading); }
+
+/* 4. Rattle & Block Toys: a toy shelf and a rug */
+.shelf { display: grid; gap: 14px; justify-items: center; }
+.shelf__rack {
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  gap: 26px;
+  padding: 0 28px;
+  border-bottom: 16px solid #b98962;
+  box-shadow: 0 4px 0 #5c4033;
+}
+.shelf__rack .rattle { width: 62px; height: 94px; }
+.shelf__tally { margin: 0; font: 400 1.25rem var(--font-hand); color: var(--heading); }
+.shelf__blocks {
+  position: relative;
+  width: min(100%, 560px);
+  aspect-ratio: 600 / 340;
+  container-type: inline-size;
+  background: var(--surface);
+  border: 3px dashed var(--line);
+  border-radius: 24px;
+  --note-color: var(--accent);
+}
+.shelf__blocks .block { font-size: 6cqw; }
+.shelf__hint { margin: 0; font-size: 0.95rem; color: var(--muted); text-align: center; }
+
+/* 6. Growth chart: the nursery doorway, a calendar and (one day) a postcard */
+.doorway { position: relative; display: grid; gap: 22px 28px; padding-bottom: 64px; }
+@media (min-width: 560px) { .doorway { grid-template-columns: 180px minmax(0, 1fr); align-items: start; } }
+.door__chart { position: relative; width: 180px; justify-self: center; }
+.door__frame { width: 100%; height: auto; }
+.door__post { fill: #f4e6d2; stroke: #4a3329; stroke-width: 3; }
+.door__tick { stroke: #8a7a6c; stroke-width: 2; }
+.door__pencil-line { stroke: #6f6a78; stroke-width: 3.2; stroke-linecap: round; }
+.door__pencil-text { font: 400 15px var(--font-hand); fill: #d8cbe6; }
+.door__pip { position: absolute; left: 22%; width: 56%; bottom: 1%; }
+.door__pip-svg { width: 100%; height: auto; }
+.door__side { display: flex; flex-direction: column; align-items: flex-start; gap: 18px; }
+.door__marks { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.door__mark { position: relative; padding-left: 38px; font: 400 1.3rem/1.25 var(--font-hand); color: var(--heading); }
+.door__mark::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 0.6em;
+  width: 28px; height: 4px;
+  border-radius: 2px;
+  background: var(--accent);
+  transform: rotate(-3deg);
+}
+.door__cal { display: flex; }
+.calendar { position: relative; width: 150px; height: 172px; padding: 0; border: 0; background: none; }
+.calendar__rings {
+  position: absolute;
+  left: 18px; right: 18px; top: 0;
+  z-index: 3;
+  height: 22px;
+  background:
+    radial-gradient(circle at 20% 50%, transparent 5px, #5a3448 5.5px, #5a3448 7.5px, transparent 8px),
+    radial-gradient(circle at 80% 50%, transparent 5px, #5a3448 5.5px, #5a3448 7.5px, transparent 8px);
+}
+.calendar__page {
+  position: absolute;
+  inset: 12px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: #fffdf7;
+  color: #5a3448;
+  border: 3px solid #5a3448;
+  border-top-width: 14px;
+  border-top-color: var(--berry);
+  border-radius: 8px;
+  box-shadow: 0 5px 0 rgba(90, 52, 72, 0.25);
+}
+.calendar__month { font: 600 0.9rem/1 var(--font-display); color: var(--berry); }
+.calendar__date { font: 700 3.3rem/1 var(--font-display); }
+.calendar__day { font: 700 0.95rem/1 var(--font-display); letter-spacing: 0.04em; }
+.calendar.is-tuesday .calendar__day { color: var(--berry); }
+.calendar__torn { z-index: 2; pointer-events: none; }
+@media (hover: hover) and (pointer: fine) {
+  .calendar:hover .calendar__page:not(.calendar__torn) { transform: rotate(-2deg); transform-origin: 50% 0; transition: transform 200ms var(--ease-out); }
+}
+
+.postcard { position: relative; width: min(320px, 100%); aspect-ratio: 300 / 190; padding: 0; border: 0; background: none; perspective: 900px; transform: rotate(-4deg); }
+.postcard[hidden] { display: none; }
+.postcard::before {
+  content: "";
+  position: absolute;
+  top: -7px; left: 50%;
+  z-index: 3;
+  width: 16px; height: 16px;
+  margin-left: -8px;
+  border-radius: 50%;
+  background: #e76f8f;
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.3);
+}
+.postcard__inner { position: relative; display: block; width: 100%; height: 100%; transform-style: preserve-3d; transition: transform 600ms var(--ease-out); }
+.postcard[aria-pressed="true"] .postcard__inner { transform: rotateY(180deg); }
+.postcard__face {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 6px solid #fffdf7;
+  border-radius: 6px;
+  background: #fffdf7;
+  box-shadow: 0 6px 0 rgba(92, 64, 51, 0.2);
+  backface-visibility: hidden;
+}
+.postcard__front svg { width: 100%; height: 100%; }
+.postcard__title { font: 400 22px var(--font-hand); fill: #a34063; }
+.postcard__back {
+  transform: rotateY(180deg);
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 8px;
+  padding: 10px;
+  text-align: left;
+  color: #3d4f8a;
+  font: 400 clamp(0.8rem, 3.6vw, 0.98rem)/1.2 var(--font-hand);
+}
+.postcard__msg { border-right: 2px solid #eccbd3; padding-right: 8px; }
+.postcard__addr { position: relative; padding-top: 44px; color: #5a3448; }
+.postcard__stamp { position: absolute; top: 0; right: 0; display: grid; place-items: center; width: 38px; height: 42px; border: 2px dashed #a34063; font-size: 1.3rem; }
+
+.door__grass {
+  position: absolute;
+  left: 0; right: 0; bottom: 0;
+  height: 58px;
+  background: linear-gradient(transparent 38%, #9cc47e 38%);
+  border-radius: 0 0 18px 18px;
+  opacity: 0;
+  transform: translateY(14px);
+  transition: opacity 500ms ease, transform 600ms var(--ease-out);
+  pointer-events: none;
+}
+.door__grass svg { width: 100%; height: 100%; }
+.crickets-back .door__grass { opacity: 1; transform: none; }
+
+/* ==========================================================
+   The dream-wish jar
+   ========================================================== */
+.wishes { padding: 72px var(--gutter) 80px; }
+.wishes__grid { max-width: 1080px; margin: 0 auto; display: grid; gap: 34px; }
+@media (min-width: 880px) { .wishes__grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); align-items: start; } }
+.wish-form {
+  padding: 22px;
+  background: var(--surface);
+  border: 3px solid var(--line);
+  border-radius: 22px;
+  box-shadow: 0 6px 0 var(--line);
+}
+.field { position: relative; display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+.field label,
+.stickers legend { font: 600 1rem var(--font-display); color: var(--heading); }
+.opt { font-weight: 500; font-size: 0.88em; color: var(--muted); }
+.field input,
+.field textarea {
+  width: 100%;
+  padding: 10px 12px;
+  border: 2.5px solid var(--line);
+  border-radius: 12px;
+  background: var(--bg);
+  color: var(--ink);
+  font-size: 1rem;
+}
+.field textarea { min-height: 92px; resize: vertical; }
+.field input::placeholder { color: var(--muted); opacity: 0.8; }
+.field input:focus-visible,
+.field textarea:focus-visible { outline: 3px solid var(--focus); outline-offset: 1px; }
+.field__count { align-self: flex-end; font-size: 0.85rem; color: var(--muted); }
+.stickers { margin: 0 0 18px; padding: 0; border: 0; }
+.stickers legend { margin-bottom: 8px; padding: 0; }
+.stickers__row { display: flex; flex-wrap: wrap; gap: 6px; }
+.sticker { position: relative; }
+.sticker input { position: absolute; inset: 0; margin: 0; opacity: 0; cursor: pointer; }
+.sticker span {
+  display: grid;
+  place-items: center;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 8px;
+  background: var(--bg);
+  border: 2.5px solid var(--line);
+  border-radius: 12px;
+  font-size: 1.35rem;
+  transition: border-color 150ms ease, transform 150ms var(--ease-out);
+}
+.sticker:first-child span { font: 600 0.9rem var(--font-display); color: var(--muted); }
+.sticker input:checked + span { border-color: var(--accent); box-shadow: 0 3px 0 var(--accent); transform: translateY(-2px); }
+.sticker input:focus-visible + span { outline: 3px solid var(--focus); outline-offset: 2px; }
+.hp { position: absolute; left: -10000px; width: 1px; height: 1px; overflow: hidden; }
+.wish-status { min-height: 1.6em; margin: 12px 0 0; font-weight: 600; color: var(--heading); }
+
+.jar { position: relative; }
+.jar__art { width: 220px; height: auto; margin: 0 auto 14px; }
+.jar__glass { fill: rgba(201, 182, 228, 0.18); stroke: var(--muted); stroke-width: 3; }
+.jar__lid { fill: #c99a78; stroke: #5c4033; stroke-width: 3; }
+.jar__glint { fill: none; stroke: var(--accent); stroke-width: 3; stroke-linecap: round; opacity: 0.6; }
+.wish-list { list-style: none; margin: 0; padding: 0; columns: 2 220px; column-gap: 18px; }
+.slip {
+  position: relative;
+  break-inside: avoid;
+  margin: 0 0 18px;
+  padding: 14px 16px 12px;
+  background: #fffbe8;
+  color: #4a2c3c;
+  border-radius: 4px;
+  box-shadow: 0 4px 0 rgba(92, 64, 51, 0.15);
+  transform: rotate(var(--tilt, 0deg));
+}
+.slip__sticker { position: absolute; top: -14px; right: 10px; font-size: 1.7rem; }
+.slip__msg { margin: 0 0 6px; font: 400 1.3rem/1.22 var(--font-hand); overflow-wrap: anywhere; }
+.slip__meta { margin: 0; font-size: 0.85rem; color: #7a5163; }
+.slip__name { font-weight: 700; }
+.slip--empty { column-span: all; text-align: center; font: 400 1.3rem/1.3 var(--font-hand); transform: none; }
+#wish-more { display: flex; margin: 4px auto 0; }
+#wish-more[hidden] { display: none; }
