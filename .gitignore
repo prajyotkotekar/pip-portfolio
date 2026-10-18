@@ -1,0 +1,32 @@
+# ── Private working notes: never pushed ─────────────────────
+# Every Markdown file stays local except the README.
+*.md
+!README.md
+
+# ── Throwaway verification output ───────────────────────────
+.verify/
+screenshots/
+test-results/
+playwright-report/
+__pycache__/
+*.pyc
+
+# ── Dependencies & environment ──────────────────────────────
+node_modules/
+.venv/
+venv/
+.env
+.env.*
+
+# ── Build output ────────────────────────────────────────────
+dist/
+.vercel/
+.netlify/
+
+# ── OS / editor clutter ─────────────────────────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+.vscode/
+.idea/
