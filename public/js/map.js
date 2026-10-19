@@ -3,6 +3,43 @@
 import { svg, h, place, motionPrefs, M, svgNS } from "./state.js";
 import { audio } from "./audio.js";
 
+/**
+ * Points every `step` units along a path made of one M and then C (cubic) segments, as a flat
+ * [x0, y0, x1, y1, …] list. Done with plain maths because getPointAtLength is slow, and the route
+ * never changes, so both maps share the result.
+ */
+function sampleRoute(d, step) {
+  const n = d.match(/-?\d*\.?\d+/g).map(Number);
+  const fine = [n[0], n[1]];
+  for (let i = 2; i + 5 < n.length; i += 6) {
+    const [x0, y0] = fine.slice(-2);
+    const [x1, y1, x2, y2, x3, y3] = n.slice(i, i + 6);
+    for (let k = 1; k <= 40; k++) {
+      const t = k / 40;
+      const u = 1 - t;
+      fine.push(
+        u * u * u * x0 + 3 * u * u * t * x1 + 3 * u * t * t * x2 + t * t * t * x3,
+        u * u * u * y0 + 3 * u * u * t * y1 + 3 * u * t * t * y2 + t * t * t * y3,
+      );
+    }
+  }
+  const out = [fine[0], fine[1]];
+  let next = step;
+  let run = 0;
+  for (let i = 2; i < fine.length; i += 2) {
+    const ax = fine[i - 2], ay = fine[i - 1], bx = fine[i], by = fine[i + 1];
+    const seg = Math.hypot(bx - ax, by - ay);
+    while (run + seg >= next) {
+      const k = (next - run) / seg;
+      out.push(ax + (bx - ax) * k, ay + (by - ay) * k);
+      next += step;
+    }
+    run += seg;
+  }
+  return out;
+}
+const routeSamples = new Map();
+
 const ROUTE =
   "M100 112C160 64 260 70 330 96C380 114 418 124 428 144C438 190 390 236 336 254C282 270 252 300 272 334C292 372 352 366 354 322C356 282 304 270 276 286C226 314 166 370 158 422C154 466 224 506 296 494C346 486 384 466 404 446C420 432 438 432 448 440C462 450 482 448 494 438";
 
@@ -96,14 +133,26 @@ export function createMap(host, { mode = "scroll", onAllDone, onDeliver } = {}) 
   const bubble = h("div", { class: "bubble bubble--above map__bubble", "aria-hidden": "true" });
   host.append(bubble);
 
+  // the chimneys and the cloud read positions from these samples
+  const STEP = 4;
+  const key = route.getAttribute("d");
+  if (!routeSamples.has(key)) routeSamples.set(key, sampleRoute(key, STEP));
+  const samples = routeSamples.get(key);
+  const pointAt = (l) => {
+    const f = Math.min(Math.max(l, 0) / STEP, samples.length / 2 - 1);
+    const i = Math.floor(f);
+    const j = Math.min(i + 1, samples.length / 2 - 1);
+    const k = f - i;
+    return { x: samples[i * 2] + (samples[j * 2] - samples[i * 2]) * k, y: samples[i * 2 + 1] + (samples[j * 2 + 1] - samples[i * 2 + 1]) * k };
+  };
+
   // how far along the route each chimney is
   const stops = STOPS.map((st) => {
     let best = 0;
     let bestD = Infinity;
-    for (let l = 0; l <= total; l += 4) {
-      const pt = route.getPointAtLength(l);
-      const d = Math.hypot(pt.x - st.x, pt.y - st.y);
-      if (d < bestD) { bestD = d; best = l; }
+    for (let i = 0; i < samples.length; i += 2) {
+      const d = Math.hypot(samples[i] - st.x, samples[i + 1] - st.y);
+      if (d < bestD) { bestD = d; best = (i / 2) * STEP; }
     }
     const btn = h("button", { type: "button", class: "hot map__stop", "aria-label": st.label });
     place(btn, st.x - 22, st.y - 30, 44, 56);
@@ -125,7 +174,7 @@ export function createMap(host, { mode = "scroll", onAllDone, onDeliver } = {}) 
   function setDrawn(t) {
     drawn = t;
     reveal.style.strokeDashoffset = String(1 - t);
-    const pt = route.getPointAtLength(Math.max(0, t * total - 6));
+    const pt = pointAt(t * total - 6);
     cloud.setAttribute("transform", `translate(${pt.x.toFixed(1)} ${pt.y.toFixed(1)})`);
     stops.forEach((st) => {
       const ready = mode === "play" || t >= st.at - 0.02;
