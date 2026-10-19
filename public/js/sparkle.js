@@ -13,8 +13,10 @@ export function initSparkles() {
   let raf = 0;
   let dpr = 1;
   let lastSpawn = 0;
+  let dirty = null; // only the patch the sparkles covered last frame gets cleared, not the whole screen
 
   const resize = () => {
+    dirty = null;
     dpr = Math.min(2, window.devicePixelRatio || 1);
     canvas.width = Math.round(innerWidth * dpr);
     canvas.height = Math.round(innerHeight * dpr);
@@ -35,7 +37,8 @@ export function initSparkles() {
 
   function frame(now) {
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, innerWidth, innerHeight);
+    if (dirty) ctx.clearRect(dirty[0] - 2, dirty[1] - 2, dirty[2] - dirty[0] + 4, dirty[3] - dirty[1] + 4);
+    let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
     for (let i = parts.length - 1; i >= 0; i--) {
       const p = parts[i];
       const t = (now - p.born) / p.life;
@@ -49,8 +52,11 @@ export function initSparkles() {
       ctx.globalAlpha = 1 - t;
       ctx.fillStyle = p.c;
       star(p.x, p.y, p.r * (1 - t * 0.5), p.rot + t * 2);
+      x0 = Math.min(x0, p.x - p.r); y0 = Math.min(y0, p.y - p.r);
+      x1 = Math.max(x1, p.x + p.r); y1 = Math.max(y1, p.y + p.r);
     }
     ctx.globalAlpha = 1;
+    dirty = parts.length ? [x0, y0, x1, y1] : null;
     raf = parts.length ? requestAnimationFrame(frame) : 0;
   }
 
