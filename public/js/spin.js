@@ -130,6 +130,11 @@ export function initSpin() {
   }
   const { TAU } = Z;
   const illo = new Z.Illustration({ element: canvas, zoom: 3.6, resize: false });
+  // On scaled screens Zdog writes the bitmap size into inline styles (height: 480px), which the
+  // stylesheet then squeezed to 280px wide: a stretched Pip. The CSS decides the size; Zdog only
+  // keeps the sharper bitmap.
+  canvas.style.removeProperty("width");
+  canvas.style.removeProperty("height");
   const { figure, head, glows } = buildPip(Z, illo);
 
   const setGlow = (theme) => glows.forEach((g) => { g.color = theme === "night" ? "rgba(255, 196, 90, 0.8)" : "rgba(255, 196, 90, 0.5)"; });
@@ -147,6 +152,16 @@ export function initSpin() {
   let dragging = false;
   let hop = 0;
   let t = 0;
+  let lastScroll = scrollY;
+
+  // scrolling past him turns him round, like a toy on a turntable you push with the page
+  addEventListener("scroll", () => {
+    if (!visible || motionPrefs.reduced) { lastScroll = scrollY; return; }
+    const dy = scrollY - lastScroll;
+    lastScroll = scrollY;
+    if (!dragging && Math.abs(dy) < 600) vel += dy * 0.0004; // about one turn per 700px of scroll
+    kick();
+  }, { passive: true });
 
   const fig = canvas.closest(".spin");
   const nearest = (a, b) => b + Math.round((a - b) / TAU) * TAU; // b's equivalent angle closest to a

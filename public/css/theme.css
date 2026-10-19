@@ -201,3 +201,9 @@
     }
   }
 }
+
+/* the 3D Pip gets more room on wide screens */
+@media (min-width: 900px) {
+  .spin { max-width: 380px; }
+  .spin__canvas { max-width: 340px; }
+}

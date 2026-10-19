@@ -68,7 +68,8 @@ def tap(pg, sel, nth=0):
 
 def run(browser, url, w, h, tag, last_post):
     logs, errors, checks = [], [], []
-    ctx = browser.new_context(viewport={"width": w, "height": h}, has_touch=(w < 800))
+    # phones and most laptops scale pages up, so test at the pixel density people really use
+    ctx = browser.new_context(viewport={"width": w, "height": h}, has_touch=(w < 800), device_scale_factor=2 if w < 800 else 1.25)
     pg = ctx.new_page()
     pg.on("console", lambda m: m.type in ("error", "warning") and logs.append(f"[{m.type}] {m.text}"))
     pg.on("pageerror", lambda e: errors.append(str(e)))
@@ -113,8 +114,9 @@ def run(browser, url, w, h, tag, last_post):
     ok("day theme", pg.evaluate("document.documentElement.dataset.theme") == "day")
     ok("theme saved", pg.evaluate("localStorage.getItem('pip-theme')") == '"day"' or pg.evaluate("localStorage.getItem('pip-theme')") == "day")
 
-    # 3D head: drag to spin
+    # 3D Pip: drawn square (not stretched), then drag to spin
     to(pg, "#zdog-pip")
+    ok("3D Pip is not stretched", pg.evaluate("(() => { const c = document.getElementById('zdog-pip'); return Math.abs(c.clientWidth - c.clientHeight) <= 1; })()"))
     box = pg.locator("#zdog-pip").bounding_box()
     pg.mouse.move(box["x"] + box["width"] * 0.3, box["y"] + box["height"] / 2)
     pg.mouse.down()
