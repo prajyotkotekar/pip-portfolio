@@ -255,3 +255,36 @@
     }
   }
 }
+
+/* ==========================================================
+   Wall decorations (motion.js adds .deco to each room)
+   ========================================================== */
+:root, [data-theme="day"] { --deco-heart: #f4a3bc; --pool-a: rgba(255, 255, 255, 0.7); --pool-b: rgba(255, 196, 120, 0.28); }
+[data-theme="night"] { --deco-heart: #b8607f; --pool-a: rgba(201, 182, 228, 0.12); --pool-b: rgba(255, 196, 102, 0.12); }
+
+.hero, .about, .made, .wishes { position: relative; isolation: isolate; overflow-x: clip; }
+.deco { position: absolute; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+.deco__pool { position: absolute; width: 46vmax; aspect-ratio: 1; border-radius: 50%; }
+.deco__pool--a { left: -14vmax; top: -10vmax; background: radial-gradient(circle, var(--pool-a), transparent 65%); }
+.deco__pool--b { right: -16vmax; bottom: -14vmax; background: radial-gradient(circle, var(--pool-b), transparent 65%); }
+.deco__i { position: absolute; left: var(--x); top: var(--y); width: var(--s); opacity: calc(0.35 + var(--d) * 0.5); }
+.deco__i svg { width: 100%; height: auto; overflow: visible; }
+.deco__i--star { --twinkle: #f2b53a; }
+[data-theme="night"] .deco__i--cloud { opacity: calc(0.12 + var(--d) * 0.25); }
+@media (max-width: 700px) { .deco__i { width: calc(var(--s) * 0.7); } .deco__i--cloud:nth-child(odd) { display: none; } }
+
+.deco__layer { position: absolute; inset: 0; }
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    /* one plain transform animation per depth layer (no var() in keyframes), so it can run on
+       the compositor instead of recalculating every shape on every frame */
+    .hero, .about, .made, .wishes { view-timeline: --room block; }
+    .deco__layer { animation: linear both; animation-timeline: --room; animation-range: cover; }
+    .deco__layer--1 { animation-name: deco-far; }
+    .deco__layer--2 { animation-name: deco-mid; }
+    .deco__layer--3 { animation-name: deco-near; }
+    @keyframes deco-far { from { transform: translateY(50px); } to { transform: translateY(-50px); } }
+    @keyframes deco-mid { from { transform: translateY(85px); } to { transform: translateY(-85px); } }
+    @keyframes deco-near { from { transform: translateY(120px); } to { transform: translateY(-120px); } }
+  }
+}

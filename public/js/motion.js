@@ -165,8 +165,40 @@ function sceneTilt() {
   });
 }
 
+/**
+ * Soft shapes floating on each room's wall: clouds, stars, little moons and hearts, kept to the
+ * edges so they never sit behind the words. Bigger ones are "closer" and drift further as you
+ * scroll (a CSS scroll timeline does the moving, see theme.css). Two pools of lamplight too.
+ */
+const HEART = `<svg viewBox="0 0 20 18"><path d="M10 17C4 12 0 9 0 5a5 5 0 0 1 10-2 5 5 0 0 1 10 2c0 4-4 7-10 12z" fill="var(--deco-heart)"/></svg>`;
+const use = (id, vb) => `<svg viewBox="${vb}"><use href="#${id}"/></svg>`;
+const SHAPES = { cloud: use("cloudlet", "0 0 56 36"), star: use("twinkle", "0 0 20 20"), moon: use("moon", "-60 -60 120 120"), heart: HEART };
+const KINDS = ["cloud", "star", "heart", "moon", "star", "cloud", "heart", "star", "cloud"];
+
+function roomDeco() {
+  document.querySelectorAll(".hero, .about, .made, .wishes").forEach((room, r) => {
+    const deco = document.createElement("div");
+    deco.className = "deco";
+    deco.setAttribute("aria-hidden", "true");
+    // three depth layers (far, middle, near), each moved as one piece
+    const layers = ["", "", ""];
+    KINDS.forEach((kind, i) => {
+      const seed = (i * 37 + r * 17) % 100;
+      const left = i % 2 === 0;
+      const x = left ? 1 + (seed % 11) : 87 + (seed % 10);
+      const y = 6 + ((i * 11 + r * 23) % 9) * 10.5;
+      const depth = [0.45, 0.75, 1][(i + r) % 3];
+      const size = Math.round((kind === "cloud" ? 74 : kind === "moon" ? 46 : 26) * (0.6 + depth * 0.6));
+      layers[(i + r) % 3] += `<span class="deco__i deco__i--${kind}" style="--x:${x}%;--y:${y}%;--s:${size}px;--d:${depth}">${SHAPES[kind]}</span>`;
+    });
+    deco.innerHTML = `<span class="deco__pool deco__pool--a"></span><span class="deco__pool deco__pool--b"></span>` +
+      layers.map((l, n) => `<div class="deco__layer deco__layer--${n + 1}">${l}</div>`).join("");
+    room.prepend(deco);
+  });
+}
+
 export function initMotion() {
-  [nightMeter, heroEntrance, heroParallax, heroDepth, shelfReveals, toyTilt, sceneTilt].forEach((fn) => {
+  [roomDeco, nightMeter, heroEntrance, heroParallax, heroDepth, shelfReveals, toyTilt, sceneTilt].forEach((fn) => {
     try { fn(); } catch { /* one effect failing never stops the others */ }
   });
 }
