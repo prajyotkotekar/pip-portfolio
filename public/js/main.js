@@ -18,6 +18,7 @@ import { initScene5 } from "./scenes/s5.js";
 import { initScene6 } from "./scenes/s6.js";
 import { initScene7 } from "./scenes/s7.js";
 import { initCardFade } from "./scenes/common.js";
+import { initOffscreenPause } from "./offscreen.js";
 
 function safely(fn) {
   try {
@@ -94,4 +95,5 @@ safely(initSpin);
 safely(initIdle);
 safely(initRing);
 safely(greet);
+safely(initOffscreenPause);
 document.documentElement.classList.add("js-ready");

@@ -772,3 +772,7 @@ hr.rainbow {
   from { clip-path: circle(0 at var(--vx, 90%) var(--vy, 5%)); }
   to { clip-path: circle(var(--vr, 150vmax) at var(--vx, 90%) var(--vy, 5%)); }
 }
+
+/* rooms off screen hold still (offscreen.js) */
+.is-away,
+.is-away * { animation-play-state: paused !important; }
