@@ -128,8 +128,45 @@ function toyTilt() {
   });
 }
 
+/**
+ * Each story scene is a little diorama: its picture tilts a few degrees toward the mouse, so the
+ * flat drawing reads as a box with depth. Set on each art element itself (not inherited), and the
+ * loop stops as soon as it settles.
+ */
+function sceneTilt() {
+  if (motionPrefs.reduced || !motionPrefs.finePointer) return;
+  document.querySelectorAll(".scene .stage").forEach((stage) => {
+    const arts = [...stage.querySelectorAll(".art")];
+    if (!arts.length && stage.firstElementChild) arts.push(stage.firstElementChild);
+    let tx = 0, ty = 0, x = 0, y = 0, raf = 0, movedAt = 0;
+    const step = () => {
+      // the mouse has rested: ease back to level, so plain scrolling keeps the drawing flat
+      if (performance.now() - movedAt > 1200) { tx = 0; ty = 0; }
+      x += (tx - x) * 0.08;
+      y += (ty - y) * 0.08;
+      const flat = !tx && !ty && Math.abs(x) < 0.01 && Math.abs(y) < 0.01;
+      // level again: drop the transform completely so the drawing goes back to a plain flat layer
+      const t = flat ? "" : `perspective(1200px) rotateY(${(x * 3.2).toFixed(2)}deg) rotateX(${(-y * 2.4).toFixed(2)}deg)`;
+      arts.forEach((a) => { a.style.transform = t; });
+      raf = flat ? 0 : requestAnimationFrame(step);
+    };
+    const go = () => { if (!raf) raf = requestAnimationFrame(step); };
+    stage.addEventListener("pointermove", (e) => {
+      if (e.pointerType !== "mouse" || e.buttons) return;
+      const nx = clamp((e.clientX / innerWidth) * 2 - 1, -1, 1);
+      const ny = clamp((e.clientY / innerHeight) * 2 - 1, -1, 1);
+      if (Math.abs(nx - tx) + Math.abs(ny - ty) < 0.01) return; // scrolling sends pointer moves that didn't move
+      tx = nx;
+      ty = ny;
+      movedAt = performance.now();
+      go();
+    }, { passive: true });
+    stage.addEventListener("pointerleave", () => { tx = 0; ty = 0; go(); });
+  });
+}
+
 export function initMotion() {
-  [nightMeter, heroEntrance, heroParallax, heroDepth, shelfReveals, toyTilt].forEach((fn) => {
+  [nightMeter, heroEntrance, heroParallax, heroDepth, shelfReveals, toyTilt, sceneTilt].forEach((fn) => {
     try { fn(); } catch { /* one effect failing never stops the others */ }
   });
 }
