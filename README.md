@@ -3,6 +3,8 @@
 The homepage of **Pip the Skull Baby**, Junior Dream Engineer at the Midnight Nursery.
 *"I build the dreams you fall asleep inside."*
 
+**Visit Pip's bedroom: [pip-the-skull-baby.netlify.app](https://pip-the-skull-baby.netlify.app)**
+
 Built for **Baby's First Website** at [haX.baby](https://hax.baby) (Track 1: Pip).
 
 The whole site is Pip's nursery at night. You scroll through the story of the night the crickets went on holiday, then play with the five things Pip built to fill the quiet.
