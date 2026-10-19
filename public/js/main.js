@@ -20,6 +20,7 @@ import { initScene7 } from "./scenes/s7.js";
 import { initCardFade } from "./scenes/common.js";
 import { initOffscreenPause } from "./offscreen.js";
 import { initMotion } from "./motion.js";
+import { initSmoothScroll } from "./smoothscroll.js";
 
 function safely(fn) {
   try {
@@ -98,4 +99,5 @@ safely(initRing);
 safely(greet);
 safely(initOffscreenPause);
 safely(initMotion);
+safely(initSmoothScroll);
 document.documentElement.classList.add("js-ready");
