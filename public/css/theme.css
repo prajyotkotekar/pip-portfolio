@@ -207,3 +207,51 @@
   .spin { max-width: 380px; }
   .spin__canvas { max-width: 340px; }
 }
+
+/* ==========================================================
+   The story camera (native scroll timelines, no script):
+   - inside a scene, the picture drifts and zooms slowly while you read
+   - between scenes, the old picture holds still while the camera pushes in,
+     and the next one opens from a cartoon iris in the middle
+   ========================================================== */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .scene { view-timeline: --scene block; overflow-x: clip; } /* zoomed pictures never widen the page */
+
+    /* a slow drift while the scene is pinned, so it never sits still like a slide */
+    .scene .stage > .art,
+    .scene .stage > .pan,
+    #stage-6 > :first-child {
+      animation: scene-drift linear both;
+      animation-timeline: --scene;
+      animation-range: contain 0% contain 100%;
+    }
+    @keyframes scene-drift {
+      from { scale: 1; translate: 0 0; }
+      to { scale: 1.07; translate: 0 -1.5%; }
+    }
+
+    /* leaving: hold the picture in place (it would otherwise be shoved up) and push in */
+    .scene:has(+ .scene) .stage {
+      animation: scene-out linear both;
+      animation-timeline: --scene;
+      animation-range: exit 0% exit 100%;
+    }
+    @keyframes scene-out {
+      from { translate: 0 0; scale: 1; }
+      to { translate: 0 100%; scale: 1.22; }
+    }
+
+    /* arriving: also held in place, opening from a small circle with a gentle zoom-out */
+    .scene + .scene .stage {
+      animation: scene-in linear both;
+      animation-timeline: --scene;
+      animation-range: entry 0% entry 100%;
+    }
+    @keyframes scene-in {
+      from { translate: 0 -100%; scale: 1.25; clip-path: circle(0% at 50% 46%); }
+      25% { clip-path: circle(6% at 50% 46%); }
+      to { translate: 0 0; scale: 1; clip-path: circle(80% at 50% 46%); }
+    }
+  }
+}
