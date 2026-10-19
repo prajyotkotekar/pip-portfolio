@@ -7,6 +7,7 @@ counter. Any console error or warning, page error, failed check or horizontal sc
 
 Needs Python 3 with Playwright (`pip install playwright` then `playwright install chromium`).
 Usage: python tests/e2e.py [phone|tablet|desktop ...]
+Set E2E_URL to test a deployed copy instead (it posts real test wishes there).
 """
 import math
 import os
@@ -234,10 +235,13 @@ def run(browser, url, w, h, tag, last_post):
 
 def main():
     only = sys.argv[1:]
+    # E2E_URL=https://… tests a deployed copy instead of starting the local dev server
+    live = os.environ.get("E2E_URL")
     port = free_port()
     failed = 0
     with tempfile.TemporaryDirectory() as data_dir:
-        server = start_server(port, data_dir)
+        server = None if live else start_server(port, data_dir)
+        url = live or f"http://127.0.0.1:{port}/"
         try:
             with sync_playwright() as p:
                 browser = p.chromium.launch(args=["--autoplay-policy=user-gesture-required"])
@@ -245,7 +249,7 @@ def main():
                 for w, h, tag in SIZES:
                     if only and tag not in only:
                         continue
-                    logs, errors, checks, last_post = run(browser, f"http://127.0.0.1:{port}/", w, h, tag, last_post)
+                    logs, errors, checks, last_post = run(browser, url, w, h, tag, last_post)
                     bad = [c for c in checks if not c[0]]
                     print(f"{tag} {w}x{h}: {len(checks) - len(bad)}/{len(checks)} checks, "
                           f"{len(logs)} console errors/warnings, {len(errors)} page errors")
@@ -254,7 +258,8 @@ def main():
                     failed += len(bad) + len(logs) + len(errors)
                 browser.close()
         finally:
-            server.terminate()
+            if server:
+                server.terminate()
     sys.exit(1 if failed else 0)
 
 
