@@ -184,3 +184,20 @@
 .intro .hero__tagline,
 .intro .hero__intro,
 .intro .hero__actions { opacity: 0; }
+
+/* story cards tip up into place like pages as they scroll in (native scroll timeline, no script) */
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .step { view-timeline: --page block; perspective: 1000px; }
+    .step .card {
+      transform-origin: 50% 100%;
+      animation: page-in linear both;
+      animation-timeline: --page;
+      animation-range: entry 5% entry 65%;
+    }
+    @keyframes page-in {
+      from { rotate: x 32deg; translate: 0 48px; }
+      to { rotate: x 0deg; translate: 0 0; }
+    }
+  }
+}
