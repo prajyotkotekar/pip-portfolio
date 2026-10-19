@@ -253,6 +253,23 @@
       25% { clip-path: circle(6% at 50% 46%); }
       to { translate: 0 0; scale: 1; clip-path: circle(80% at 50% 46%); }
     }
+
+    /* touch screens scroll on their own thread, and the hold-in-place + iris above can only run
+       on the main thread, so it lagged a frame behind the finger and the picture shook. Here
+       scenes ride the scroll naturally: the old one sinks back, the new one settles in. Scale
+       and opacity only, so it stays in step with the finger. */
+    @media (pointer: coarse), (max-width: 760px) {
+      .scene:has(+ .scene) .stage { animation-name: scene-out-touch; }
+      .scene + .scene .stage { animation-name: scene-in-touch; }
+    }
+    @keyframes scene-out-touch {
+      from { scale: 1; opacity: 1; }
+      to { scale: 0.92; opacity: 0.5; }
+    }
+    @keyframes scene-in-touch {
+      from { scale: 1.06; opacity: 0.5; }
+      to { scale: 1; opacity: 1; }
+    }
   }
 }
 
